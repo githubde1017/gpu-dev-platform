@@ -12,7 +12,8 @@ gpu-dev-platform/
 ├── .gitignore
 ├── docs/
 │   ├── 00_wsl2_prerequisites.md      # 【必讀，第一步】WSL2啟用systemd等前提
-│   └── 01_client_setup.md            # 開發者筆電端VS Code設置
+│   ├── 01_client_setup.md            # 開發者筆電端VS Code設置
+│   └── 02_troubleshooting.md         # 【首次部署必讀】從零建置常見問題與排除
 ├── scripts/
 │   ├── 01_enable_gpu_sharing.sh      # GPU共享機制（WSL2智能感知）
 │   ├── 02_create_user.sh             # 開發者開戶（含Rootless Docker安裝）
@@ -30,6 +31,8 @@ gpu-dev-platform/
 ```
 
 ## 快速開始（管理者）
+
+> ⚠️ 若HE08-PC尚未安裝WSL2，請先完整閱讀 `docs/02_troubleshooting.md`，照裡面「建議驗證順序」章節逐步執行，可預先避開首次部署最常見的9個坑（BIOS虛擬化、驅動裝錯位置、Port衝突、Rootless GPU設定等）。
 
 1. 完成 `docs/00_wsl2_prerequisites.md` 全部步驟
 2. Clone本repo到WSL2內部檔案系統（不要放`/mnt/c`）：
