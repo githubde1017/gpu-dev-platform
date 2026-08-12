@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${DEV_USER}_${COMPOSE_PROJECT_NAME}_app
+    volumes:
+      - .:/workspace
+      - /data/shared/datasets:/workspace/shared_datasets:ro
+      - /data/shared/models:/workspace/shared_models:ro
+    ports:
+      - "${HOST_PORT}:8000"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # 12GB VRAM為共用資源，不在compose層硬性配額（GPU無法像記憶體一樣切分），
+    # 改用團隊使用規範 + 監控腳本協調，詳見 HE08-PC_vram-budget-calibration.md
+    restart: unless-stopped

@@ -1,0 +1,18 @@
+# 敏感/個人資料，不進版控
+secrets/
+*.env
+!.env.example
+ssh-keys/*.pub
+data/shared/datasets/*
+data/shared/models/*
+!data/shared/datasets/.gitkeep
+!data/shared/models/.gitkeep
+
+# 開發者個人專案（各自在自己家目錄，不應該進這個共用repo）
+projects/
+
+# 一般
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
