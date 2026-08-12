@@ -13,7 +13,8 @@ gpu-dev-platform/
 ├── docs/
 │   ├── 00_wsl2_prerequisites.md      # 【必讀，第一步】WSL2啟用systemd等前提
 │   ├── 01_client_setup.md            # 開發者筆電端VS Code設置
-│   └── 02_troubleshooting.md         # 【首次部署必讀】從零建置常見問題與排除
+│   ├── 02_troubleshooting.md         # 【首次部署必讀】從零建置常見問題與排除，含長期維運注意事項
+│   └── 03_port_allocation.md         # Port分配登記表，新增專案前先查閱
 ├── scripts/
 │   ├── 01_enable_gpu_sharing.sh      # GPU共享機制（WSL2智能感知）
 │   ├── 02_create_user.sh             # 開發者開戶（含Rootless Docker安裝）

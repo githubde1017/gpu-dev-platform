@@ -89,3 +89,47 @@ sudo nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 9. 跑`scripts/01_enable_gpu_sharing.sh`、`scripts/03_monitor_gpu.sh`
 
 **關鍵原則**：第3步先用rootful模式驗證GPU passthrough，之後如果rootless GPU測試（第8步）失敗，能確定問題出在「rootless GPU額外設定」而非「WSL2/驅動本身沒打通」，比較好定位問題根源。
+
+---
+
+## 階段六：長期維運（部署完成後仍需注意）
+
+### 問題10：Docker Desktop商業授權門檻
+**說明**：Docker Desktop對企業使用有免費門檻——員工數超過250人或年營收超過1000萬美元，需訂閱Docker Business才合規。
+**排除**：部署前先確認公司規模是否落在需付費範圍，避免上線後才發現授權不合規，屬法務/採購問題而非技術問題。
+
+### 問題11：主機睡眠會切斷所有連線
+**症狀**：Windows閒置一段時間自動睡眠，所有開發者SSH連線與運行中容器全部中斷。
+**排除**：設定 → 電源與電池 → 螢幕與睡眠 → 「電源連接時，裝置在閒置後進入睡眠」設為「永不」。
+
+### 問題12：內網IP浮動導致客端連線失效
+**症狀**：DHCP自動配發IP時，路由器重開機或租約到期可能改變HE08-PC的IP，所有開發者`~/.ssh/config`裡寫死的`HostName`失效。
+**排除**：在路由器設定裡為HE08-PC的MAC位址做DHCP保留，或直接在Windows網卡設定靜態IP。
+
+### 問題13：WSL2虛擬磁碟（.vhdx）只增不減
+**症狀**：即使WSL2內刪除檔案，`ext4.vhdx`實體佔用空間不會自動釋放，長期使用後可能膨脹到數十GB。
+**排除**：定期壓縮，建議每季執行一次：
+```powershell
+wsl --shutdown
+diskpart
+# select vdisk file="C:\Users\<帳號>\AppData\Local\Packages\...\ext4.vhdx"
+# compact vdisk
+```
+
+### 問題14：Port分配無中央登記，多人容易撞號
+**症狀**：`.env`裡的`HOST_PORT`目前靠開發者自行挑選，兩人選到同一port會導致服務啟動失敗，錯誤訊息不一定直觀。
+**排除**：見 `docs/03_port_allocation.md`，新增專案前先登記查閱，避免衝突。
+
+### 問題15：防毒軟體掃描WSL2/Docker檔案拖慢效能
+**症狀**：即時掃描監控WSL2的`.vhdx`或Docker overlay檔案系統，造成I/O效能下降，容器build/啟動明顯變慢。
+**排除**：在防毒軟體設定中，將WSL相關路徑（`%LOCALAPPDATA%\Packages\*wsl*`）與Docker Desktop資料目錄加入掃描排除清單。
+
+---
+
+## 客端Shell選擇（PowerShell / Bash 皆可）
+
+客端要用PowerShell、Git Bash、Windows Terminal或macOS/Linux Terminal都不影響——SSH連線與VS Code Remote-SSH操作跟客端shell無關，差異僅在連線前那幾個本機指令（`ssh-keygen`、查看`.ssh/config`）的語法習慣。連上主機後，VS Code整合終端機接的是遠端主機/容器內的bash，不會有跨平台語法混淆的問題。
+
+PowerShell客端需留意：
+- `ssh`指令仰賴Windows內建OpenSSH Client是否已裝（見問題「客端SSH client狀態」，與shell種類無關，是系統層級功能）
+- 若之後要寫PowerShell腳本輔助設定，受限帳戶可能受Execution Policy限制而跑不動`.ps1`，需調整原則或請MIS協助，但這不影響單純用`ssh`/VS Code連線本身
