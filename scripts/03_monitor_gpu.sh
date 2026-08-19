@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# 校正對象：HE08-PC, RTX 5070 12GB VRAM
+# 校正對象：main-PC, RTX 5070 12GB VRAM
 VRAM_TOTAL_MB=12000
 WARN_THRESHOLD_PCT=75
 CRIT_THRESHOLD_PCT=90
@@ -9,7 +9,7 @@ CRIT_THRESHOLD_PCT=90
 while true; do
     clear
     echo "=========================================="
-    echo " 📊 HE08-PC 資源監控 (12GB VRAM預算) — Ctrl+C 退出"
+    echo " 📊 main-PC 資源監控 (12GB VRAM預算) — Ctrl+C 退出"
     echo "=========================================="
 
     VRAM_USED=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits)

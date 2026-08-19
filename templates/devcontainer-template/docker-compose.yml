@@ -20,5 +20,5 @@ services:
               count: all
               capabilities: [gpu]
     # 12GB VRAM為共用資源，不在compose層硬性配額（GPU無法像記憶體一樣切分），
-    # 改用團隊使用規範 + 監控腳本協調，詳見 HE08-PC_vram-budget-calibration.md
+    # 改用團隊使用規範 + 監控腳本協調，詳見 main-PC_vram-budget-calibration.md
     restart: unless-stopped

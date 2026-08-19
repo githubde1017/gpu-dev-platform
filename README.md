@@ -1,6 +1,6 @@
 # gpu-dev-platform
 
-HE08-PC（RTX 5070 12GB / 64GB RAM / Windows + WSL2）一機多人共用開發環境。
+main-PC（RTX 5070 12GB / 64GB RAM / Windows + WSL2）一機多人共用開發環境。
 
 **架構**：VS Code Remote-SSH + Rootless Docker（每人獨立、無docker群組提權）+ WSL2 GPU passthrough
 
@@ -33,7 +33,7 @@ gpu-dev-platform/
 
 ## 快速開始（管理者）
 
-> ⚠️ 若HE08-PC尚未安裝WSL2，請先完整閱讀 `docs/02_troubleshooting.md`，照裡面「建議驗證順序」章節逐步執行，可預先避開首次部署最常見的9個坑（BIOS虛擬化、驅動裝錯位置、Port衝突、Rootless GPU設定等）。
+> ⚠️ 若main-PC尚未安裝WSL2，請先完整閱讀 `docs/02_troubleshooting.md`，照裡面「建議驗證順序」章節逐步執行，可預先避開首次部署最常見的9個坑（BIOS虛擬化、驅動裝錯位置、Port衝突、Rootless GPU設定等）。
 
 1. 完成 `docs/00_wsl2_prerequisites.md` 全部步驟
 2. Clone本repo到WSL2內部檔案系統（不要放`/mnt/c`）：
